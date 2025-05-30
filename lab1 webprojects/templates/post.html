@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="post">
+        <h1 class="display-4">{{ post.title }}</h1>
+        <p class="text-muted">Автор: {{ post.author }} | Дата публикации: {{ post.date }}</p>
+        
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename='images/' + post.image_id) }}" alt="Изображение поста" class="img-fluid rounded">
+        </div>
+        
+        <p class="lead">{{ post.text }}</p>
+
+        <h2 class="mt-4">Комментарии</h2>
+        <ul class="list-unstyled">
+            {% for comment in post.comments %}
+                <li class="media mb-4">
+                    <img src="{{ url_for('static', filename='images/def-avatar.svg') }}" class="mr-3" alt="Avatar" width="64">
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">{{ comment.author }}</h5>
+                        <p>{{ comment.text }}</p>
+                        
+                        <button class="btn btn-secondary" data-toggle="collapse" data-target="#reply{{ comment.id }}" aria-controls="reply{{ comment.id }}">
+                            Ответить
+                        </button>
+
+                        <div class="collapse" id="reply{{ comment.id }}">
+                            <form action="add_reply" method="POST" class="mt-2">
+                                <div class="form-group">
+                                    <textarea name="reply" class="form-control" rows="2" placeholder="Ваш ответ..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
+                        </div>
+
+                        <ul class="list-unstyled mt-3">
+                            {% for reply in comment.replies %}
+                                <li class="media mb-3 border rounded p-3" style="background-color: #f8f9fa;">
+                                    <img src="{{ url_for('static', filename='images/def-avatar.svg') }}" class="mr-3" alt="Avatar" width="50">
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1">{{ reply.author }}</h6>
+                                        <p>{{ reply.text }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2 class="mt-4">Оставьте комментарий</h2>
+        <form action="add_comment" method="POST" class="mb-4">
+            <div class="form-group">
+                <textarea name="comment" class="form-control" rows="3" placeholder="Ваш комментарий..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Отправить</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
