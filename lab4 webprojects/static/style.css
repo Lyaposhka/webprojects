@@ -1,0 +1,13 @@
+body {
+    padding-top: 56px; /* Adjust for navbar height */
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.errors {
+    color: red;
+    list-style-type: none;
+    padding: 0;
+}

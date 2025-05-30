@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+    <h1>Редактировать пользователя</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ render_field(form.first_name) }}
+        {{ render_field(form.last_name) }}
+        {{ render_field(form.middle_name) }}
+        {{ render_field(form.role_id) }}
+        <button type="submit" class="btn btn-primary">Обновить пользователя</button>
+    </form>
+{% endblock %}
