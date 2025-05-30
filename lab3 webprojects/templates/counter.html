@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Счётчик посещений{% endblock %}
+
+{% block content %}
+<div class="card text-center mx-auto" style="max-width: 400px;">
+    <div class="card-body">
+        <h5 class="card-title">Счётчик посещений</h5>
+        <p class="card-text">Вы посетили эту страницу <strong>{{ visits }}</strong> раз(а).</p>
+    </div>
+</div>
+{% endblock %}
