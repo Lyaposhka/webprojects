@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Visit Logs</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Пользователь</th>
+                <th>Страница</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visit in visits.items %}
+                <tr>
+                    <td>{{ loop.index + (visits.page - 1) * visits.per_page }}</td>
+                    <td>{{ visit.user.first_name + ' ' + visit.user.last_name if visit.user else 'Неаутентифицированный пользователь' }}</td>
+                    <td>{{ visit.path }}</td>
+                    <td>{{ visit.created_at.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {% if visits.has_prev %}
+            <a href="{{ url_for('visit_logs', page=visits.prev_num) }}">« Previous</a>
+        {% endif %}
+        {% for page_num in visits.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if visits.page == page_num %}
+                    <a href="{{ url_for('visit_logs', page=page_num) }}" class="active">{{ page_num }}</a>
+                {% else %}
+                    <a href="{{ url_for('visit_logs', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+        {% if visits.has_next %}
+            <a href="{{ url_for('visit_logs', page=visits.next_num) }}">Next »</a>
+        {% endif %}
+    </div>
+{% endblock %}

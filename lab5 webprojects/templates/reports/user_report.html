@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Статистика посещений пользователей</h1>
+        <p class="lead">Отчёт, отображающий количество посещений сайта каждым пользователем.</p>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>№</th>
+                        <th>Пользователь</th>
+                        <th>Количество посещений</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user_id, count in user_stats %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                {{ users.get(user_id, "Неаутентифицированный пользователь") if user_id else "Неаутентифицированный пользователь" }}
+                            </td>
+                            <td>{{ count }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('reports.user_report_csv') }}" class="btn btn-primary">
+            <i class="fas fa-download"></i> Экспорт в CSV
+        </a>
+    </div>
+{% endblock %}

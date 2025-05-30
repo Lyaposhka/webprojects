@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Статистические отчёты</h1>
+        <p class="lead">Выберите отчёт для просмотра:</p>
+
+        <div class="list-group">
+            <a href="{{ url_for('reports.page_report') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-chart-bar"></i> Отчёт по посещениям страниц
+            </a>
+            <a href="{{ url_for('reports.user_report') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-users"></i> Отчёт по посещениям пользователей
+            </a>
+        </div>
+    </div>
+{% endblock %}
