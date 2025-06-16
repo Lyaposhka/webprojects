@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Список оборудования</h3>
+{% if current_user.is_authenticated and current_user.has_role('admin') %}
+    <a href="{{ url_for('add_equipment') }}" class="btn btn-primary mb-3">Добавить оборудование</a>
+{% endif %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Инв. №</th>
+            <th>Категория</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in equipment.items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.inventory_number }}</td>
+            <td>{{ item.category.name }}</td>
+            <td>{{ item.status }}</td>
+            <td>
+                <a href="{{ url_for('view_equipment', id=item.id) }}" class="btn btn-sm btn-info">Просмотр</a>
+                {% if current_user.is_authenticated and current_user.has_role('admin') %}
+                    <form action="{{ url_for('delete_equipment', id=item.id) }}" method="post" style="display:inline-block;" 
+                          onsubmit="return confirm('Удалить {{ item.name }}?')">
+                        <button class="btn btn-sm btn-danger">Удалить</button>
+                    </form>
+                    <a href="{{ url_for('dispose_equipment', id=item.id) }}" class="btn btn-sm btn-warning">Списать</a>
+                {% elif current_user.is_authenticated and current_user.has_role('moderator') %}
+                    <form action="{{ url_for('mark_repair', id=item.id) }}" method="post" style="display:inline-block;">
+                        <button class="btn btn-sm btn-secondary">На ремонт</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<nav>
+  <ul class="pagination">
+    {% if equipment.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('index', page=equipment.prev_num) }}">Назад</a></li>
+    {% endif %}
+    {% if equipment.has_next %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('index', page=equipment.next_num) }}">Вперёд</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}

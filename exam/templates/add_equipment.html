@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Добавление оборудования</h3>
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label>Название:</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Инвентарный номер:</label>
+        <input type="text" name="inventory_number" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Категория:</label>
+        <select name="category_id" class="form-select">
+            {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Дата покупки:</label>
+        <input type="date" name="purchase_date" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Стоимость:</label>
+        <input type="number" name="price" step="0.01" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Статус:</label><br>
+        <input type="radio" name="status" value="active" checked> В эксплуатации
+        <input type="radio" name="status" value="repair"> На ремонте
+        <input type="radio" name="status" value="disposed"> Списано
+    </div>
+    <div class="mb-3">
+        <label>Примечание:</label>
+        <textarea name="note" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label>Фотография:</label>
+        <input type="file" name="photo" class="form-control" required>
+    </div>
+    <button class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}

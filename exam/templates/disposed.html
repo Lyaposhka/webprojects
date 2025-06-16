@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Списанное оборудование</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Инв. №</th>
+            <th>Дата списания</th>
+            <th>Причина</th>
+            <th>Скачать акт</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for eq in equipment %}
+        <tr>
+            <td>{{ eq.name }}</td>
+            <td>{{ eq.inventory_number }}</td>
+            <td>{{ eq.disposal.date.strftime('%d.%m.%Y') }}</td>
+            <td>{{ eq.disposal.reason }}</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('download_pdf', filename=eq.disposal.pdf_filename) }}">PDF</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

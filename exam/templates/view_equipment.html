@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>{{ eq.name }}</h3>
+<p><strong>Инвентарный номер:</strong> {{ eq.inventory_number }}</p>
+<p><strong>Категория:</strong> {{ eq.category.name }}</p>
+<p><strong>Дата покупки:</strong> {{ eq.purchase_date.strftime('%d.%m.%Y') }}</p>
+<p><strong>Стоимость:</strong> {{ eq.price }} ₽</p>
+<p><strong>Статус:</strong> {{ eq.status }}</p>
+<p><strong>Примечание:</strong> {{ eq.note }}</p>
+
+{% if eq.photo %}
+    <img src="{{ url_for('static', filename='photos/' + eq.photo.filename) }}" class="img-thumbnail mt-3 mb-3" width="300">
+{% endif %}
+
+{% if current_user.is_authenticated and (current_user.has_role('moderator') or current_user.has_role('admin')) %}
+    <h5 class="mt-4">Добавить запись об обслуживании</h5>
+    <form method="post" action="{{ url_for('add_maintenance', id=eq.id) }}">
+        <textarea name="comment" class="form-control mb-2" placeholder="Комментарий" required></textarea>
+        <button class="btn btn-success btn-sm">Добавить</button>
+    </form>
+{% endif %}
+
+{% if current_user.is_authenticated and current_user.has_role('admin') %}
+    <h5 class="mt-4">Изменить статус</h5>
+    <form method="post" action="{{ url_for('change_status', id=eq.id) }}">
+        <select name="status" class="form-select mb-2" required>
+            <option value="active" {% if eq.status == 'active' %}selected{% endif %}>В эксплуатации</option>
+            <option value="repair" {% if eq.status == 'repair' %}selected{% endif %}>На ремонте</option>
+            <option value="disposed" {% if eq.status == 'disposed' %}selected{% endif %}>Списано</option>
+        </select>
+        <button class="btn btn-outline-primary btn-sm">Сменить статус</button>
+    </form>
+{% endif %}
+
+<h5 class="mt-4">История обслуживания</h5>
+<ul class="list-group">
+    {% for entry in eq.maintenances %}
+        <li class="list-group-item">
+            <strong>{{ entry.date.strftime('%d.%m.%Y') }}:</strong> {{ entry.comment }}
+        </li>
+    {% else %}
+        <li class="list-group-item">Записей нет</li>
+    {% endfor %}
+</ul>
+{% endblock %}
