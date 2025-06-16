@@ -4,3 +4,4 @@ flask-migrate
 flask-sqlalchemy 
 python-dotenv
 waitress
+gunicorn
