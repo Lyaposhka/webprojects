@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Информация о запросе{% endblock %}
+{% block content %}
+    <h1>Информация о запросе</h1>
+    <p><strong>Параметры URL:</strong> {{ request.args }}</p>
+    <p><strong>Заголовки запроса:</strong> {{ request.headers }}</p>
+    <p><strong>Cookie:</strong> {{ request.cookies }}</p>
+    <a href="/">Назад</a>
+{% endblock %}
